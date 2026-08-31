@@ -225,7 +225,7 @@ class IndiToxModelEngine:
 
         for i, col in enumerate(LABEL_COLS):
             ml_p = float(probs[i]) if i < len(probs) else 0.0
-            lex_p = float(lexicon_boost.get(col, 0.0))
+            lex_p = lexicon_boost.get(col, 0.0)
 
             if has_lexicon_hit:
                 combined_p = min(1.0, max(ml_p, lex_p, 0.5 * ml_p + 0.5 * lex_p))
