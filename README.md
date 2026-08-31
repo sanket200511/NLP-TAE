@@ -6,115 +6,24 @@
 
 ---
 
-## 🌟 Executive Summary
+## 📂 Project Documentation
 
-**IndiTox 2.0** is an end-to-end NLP and Machine Learning system engineered from the ground up for detecting **toxic comments across Indian social media spaces**. Unlike traditional English-centric models, IndiTox 2.0 is specifically designed for the linguistic nuances of the Indian digital sphere, natively handling **Native Indic Scripts** (Devanagari, Tamil, Telugu, Malayalam, Kannada), **Romanized Hinglish / Code-Mixed text**, character elongations, masked vulgarities, and regional abusive slang.
+All detailed project documents are organized inside the [**`docs/`**](file:///d:/Projects/Toxic-Comment-Detector/docs) folder:
 
-### 🌐 Supported Indian Languages
-1. **Hindi (हिन्दी)** — Native Devanagari script processing & stopword filtering
-2. **Hinglish (Code-Mixed)** — Romanized Hindi slang, abusive phrases, and conversational discourse
-3. **Marathi (मराठी)** — Native Devanagari script and Romanized Marathi slang & insults
-4. **Telugu (తెలుగు / Tenglish)** — Native script and Romanized Dravidian comments
-5. **Tamil (தமிழ் / Tanglish)** — Native script and Romanized Tamil insults & feedback
-6. **Malayalam (മലയാളം / Manglish)** — Regional comments & abusive terminology
-7. **Kannada (ಕನ್ನಡ / Kanglish)** — Regional comments & moderation
-8. **Indian English** — Socio-political discussions, cyberbullying, and hate speech
+1. 🌐 [**Project Overview & Quick Start**](file:///d:/Projects/Toxic-Comment-Detector/docs/README.md): Supported languages, taxonomies, and installation instructions.
+2. 🎬 [**Live Demo & Testing Script**](file:///d:/Projects/Toxic-Comment-Detector/docs/DEMO_GUIDE.md): Testing scenarios, clean/toxic test inputs, and batch moderation walkthrough.
+3. 🧠 [**System Architecture & NLP Pipeline**](file:///d:/Projects/Toxic-Comment-Detector/docs/ARCHITECTURE.md): Multi-ngram TF-IDF, FastText subwords, and ensemble classification blending details.
+4. 📊 [**Dataset Specifications**](file:///d:/Projects/Toxic-Comment-Detector/docs/DATASET.md): Spec and schema of the `data/indian_toxic_comments.csv` benchmark dataset.
 
 ---
 
-## 🛡️ Multi-Label Toxicity Taxonomy
-IndiTox 2.0 classifies comments across **6 standard multi-label categories**:
-- **Toxic (`toxic`)**: General hostility, rudeness, trolling, or aggressive tone.
-- **Severe Toxic (`severe_toxic`)**: Extremely vulgar attacks, high-severity offensive slurs.
-- **Obscene (`obscene`)**: Sexual vulgarity, anatomical profanity, and abusive slang.
-- **Threat (`threat`)**: Direct threats of violence, physical harm, or murder.
-- **Insult (`insult`)**: Derogatory personal name-calling and mocking.
-- **Identity Hate (`identity_hate`)**: Communal, religious, casteist, regional, or ethnic hate speech.
+## 🚀 Quick Run
 
----
+To start the Flask web application locally:
 
-## 🧠 System Architecture & NLP Pipeline
-
-```
-[User Comment] (Hindi / Hinglish / Telugu / Tamil / Kannada / Malayalam / English)
-       │
-       ▼
-[Indic Preprocessing Engine]
- ├── Unicode Script Normalization (Devanagari, Dravidian, Latin)
- ├── De-obfuscation (Masked profanities: b@kwas, b*ch, bsdk)
- ├── Elongation Compression (bhaaaai -> bhai, kuttaaa -> kutta)
- └── Indic & Hinglish Stopword Filtering
-       │
-       ▼
-[Language & Script Detection] ──> Auto-identifies source language
-       │
-       ▼
-[Feature Extraction & Embeddings]
- ├── FastText Subword Embeddings (char n-grams 2-6 for typo resilience)
- └── Multi-lingual TF-IDF Vectorizer (word 1-3 & char n-grams)
-       │
-       ▼
-[Classification Models & Hybrid Inference]
- ├── Logistic Regression (OneVsRest with Balanced Class Weights)
- ├── Random Forest Ensemble Classifier
- └── Indic Toxic Lexicon Sensitivity Blending
-       │
-       ▼
-[Explainability & Polite Rephrase Engine]
- ├── Token-level Toxic Span Highlighting
- └── Constructive Civil Rephrase Suggestions
-```
-
----
-
-## 🚀 Key Features in the Streamlit Web Application
-
-1. **🏠 Home & Overview**: Project highlights, taxonomy breakdown, and pipeline flowchart.
-2. **📊 Indian Multilingual EDA**: Language distribution charts, clean vs. toxic proportions, label correlation heatmaps, and multilingual n-gram explorer.
-3. **🧼 Indic Preprocessing Studio**: Real-time inspection of Unicode preservation, character elongation reduction, and stopword removal.
-4. **🤖 Model Benchmarks & Training**: Interactive performance evaluation with Macro/Micro F1 scores, Hamming Loss, 2x2 confusion matrices, and ROC-AUC curves.
-5. **🔍 Live Comment Detector**:
-   - Quick-try presets for 7 Indian languages.
-   - Dynamic Language & Script badge.
-   - Real-time overall toxicity gauge and per-category confidence pills.
-   - **Explainability Span Highlighter**: Visualizes toxic trigger words.
-   - **Polite Rephrase Suggester**: Suggests respectful, constructive alternatives.
-6. **📁 Batch CSV Moderation**: Upload any comment feed (YouTube/Twitter/Instagram) to generate exportable moderation reports (`inditox_moderation_report.csv`).
-
----
-
-## 💻 Installation & Usage
-
-### 1. Prerequisites & Virtual Environment
-```bash
-# Clone and navigate to the repository
-git clone https://github.com/sanket200511/NLP-TAE.git
-cd NLP-TAE
-
-# Activate the virtual environment (Windows)
+```powershell
+cd d:\Projects\Toxic-Comment-Detector
 .\venv\Scripts\activate
+python app.py
 ```
-
-### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Pre-train the Models
-```bash
-python train_models.py
-```
-
-### 4. Launch the Interactive Web Application
-```bash
-streamlit run main.py
-```
-
----
-
-## 📊 Performance & Evaluation Highlights
-
-| Model Architecture | Macro F1 | Micro F1 | Weighted F1 | Hamming Loss |
-| :--- | :---: | :---: | :---: | :---: |
-| **TF-IDF + Logistic Regression (OvR)** | **0.992** | **0.994** | **0.993** | **0.003** |
-| **FastText Subwords + Random Forest** | **0.943** | **0.972** | **0.969** | **0.018** |
+Open **`http://localhost:8080`** in your browser.
