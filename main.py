@@ -5,18 +5,17 @@ Tailored for Indian Social Media Comments across Hindi, Hinglish, Telugu, Tamil,
 Features: FastText Subwords + TF-IDF + Logistic Regression / Random Forest + Lexicon Explainability & Polite Rephraser.
 """
 
+import os
+os.environ["PYTHONWARNINGS"] = "ignore"
+import warnings
+warnings.filterwarnings("ignore")
+
 import sys
 import io
 import re
 import string
-import warnings
 from pathlib import Path
 from typing import Optional, Dict, Any, Tuple, List
-
-# Suppress Altair/narwhals version deprecation warnings
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", module="altair")
-warnings.filterwarnings("ignore", module="narwhals")
 
 import altair as alt
 import joblib
@@ -207,10 +206,16 @@ html, body, [class*="css"] {
 /* Footer */
 footer { visibility: hidden; }
 .inditox-footer {
-    position: fixed; left:0; bottom:0; width:100%;
-    background: #0f172a; color:#94a3b8; text-align:center;
-    padding: 8px 12px; font-size: 13px; z-index: 9999;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+    background: rgba(125, 125, 125, 0.05);
+    color: #94a3b8;
+    text-align: center;
+    padding: 16px 12px;
+    font-size: 13px;
+    margin-top: 60px;
+    margin-bottom: 10px;
+    border-top: 1px solid rgba(125, 125, 125, 0.15);
+    border-radius: 10px;
 }
 .inditox-footer strong { color: #f1f5f9; }
 </style>
