@@ -9,8 +9,14 @@ import sys
 import io
 import re
 import string
+import warnings
 from pathlib import Path
 from typing import Optional, Dict, Any, Tuple, List
+
+# Suppress Altair/narwhals version deprecation warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+warnings.filterwarnings("ignore", module="altair")
+warnings.filterwarnings("ignore", module="narwhals")
 
 import altair as alt
 import joblib
@@ -59,9 +65,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        "Get Help": "https://github.com/SaiVivek7/Toxic-comment-classification",
-        "Report a bug": "mailto:support@inditox.org",
-        "About": "🇮🇳 **IndiTox 2.0**: Multilingual Toxic Comment Detection for Indian Social Media.\n\nSupports Hindi, Hinglish, Telugu, Tamil, Malayalam, Kannada, and Indian English."
+        "Get Help": "https://github.com/sanket200511/NLP-TAE",
+        "Report a bug": "mailto:sanketkurve.2005@gmail.com",
+        "About": "🇮🇳 **IndiTox 2.0**: Multilingual Toxic Comment Detection for Indian Social Media.\n\nAuthor: Sanket Kurve (CS23121)\nSupports Hindi, Hinglish, Telugu, Tamil, Malayalam, Kannada, and Indian English."
     }
 )
 
@@ -69,7 +75,7 @@ ROOT = Path(__file__).parent
 DATA_PATH = ROOT / "data" / "indian_toxic_comments.csv"
 
 # ==========================================
-# Custom CSS (Modern Aesthetic & Theming)
+# Custom CSS (Theme-Adaptive Sleek Glassmorphism)
 # ==========================================
 st.markdown("""
 <style>
@@ -87,7 +93,7 @@ html, body, [class*="css"] {
     padding: 24px 28px;
     margin-bottom: 24px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 .hero-title {
     font-family: 'Outfit', sans-serif;
@@ -122,46 +128,45 @@ html, body, [class*="css"] {
     color: #f8fafc;
 }
 
-/* Feature & Step Cards */
+/* Feature & Step Cards - Theme Adaptive */
 .step-card {
-    background: #ffffff;
+    background: rgba(125, 125, 125, 0.07);
     border-radius: 14px;
     padding: 20px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(125, 125, 125, 0.2);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     height: 100%;
     transition: all 0.2s ease-in-out;
 }
 .step-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     border-color: #6366f1;
 }
 .step-num {
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 1.5px;
-    color: #6366f1;
+    color: #818cf8;
     text-transform: uppercase;
     margin-bottom: 6px;
 }
 .step-title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #0f172a;
     margin-bottom: 6px;
 }
 .step-desc {
     font-size: 0.9rem;
-    color: #64748b;
+    opacity: 0.85;
     line-height: 1.4;
 }
 
 /* Toxicity Indicators & Badges */
 .badge-clean {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
     padding: 6px 14px;
     border-radius: 9999px;
     font-weight: 600;
@@ -170,9 +175,9 @@ html, body, [class*="css"] {
     gap: 6px;
 }
 .badge-toxic {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
     padding: 6px 14px;
     border-radius: 9999px;
     font-weight: 600;
@@ -181,9 +186,9 @@ html, body, [class*="css"] {
     gap: 6px;
 }
 .badge-lang {
-    background: #eff6ff;
-    color: #1e40af;
-    border: 1px solid #bfdbfe;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
     padding: 4px 12px;
     border-radius: 9999px;
     font-weight: 600;
@@ -192,10 +197,10 @@ html, body, [class*="css"] {
 
 /* Result box */
 .res-box {
-    background: #f8fafc;
+    background: rgba(125, 125, 125, 0.08);
     border-radius: 12px;
     padding: 16px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(125, 125, 125, 0.2);
     margin-top: 14px;
 }
 
@@ -336,13 +341,14 @@ def render_home_page():
         st.error("**6. Identity Hate (`identity_hate`)**\n\nCommunal, religious, casteist, regional, or ethnic hate speech.")
 
     st.markdown("---")
-    st.markdown("### 👤 Author & Academic Details")
+    st.markdown("### 👤 Author & Project Overview")
     st.markdown("""
-    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-        <p style="margin: 4px 0;"><strong>Project:</strong> Indian Multilingual Toxic Comment Detection (IndiTox 2.0)</p>
-        <p style="margin: 4px 0;"><strong>Author:</strong> Sanket Kurve (USN: CS23121) | NLP TAE Course</p>
-        <p style="margin: 4px 0;"><strong>Reference & Foundation:</strong> <a href="https://github.com/SaiVivek7/Toxic-comment-classification" target="_blank">SaiVivek7/Toxic-comment-classification</a> (Mahindra University NLP Team)</p>
-        <p style="margin: 4px 0;"><strong>Focus:</strong> Content moderation in Indian multilingual social media ecosystems.</p>
+    <div style="background: rgba(125, 125, 125, 0.08); border: 1px solid rgba(125, 125, 125, 0.2); border-radius: 12px; padding: 20px;">
+        <p style="margin: 6px 0; font-size: 1.05rem;"><strong>Project:</strong> Indian Multilingual Toxic Comment Detection System (IndiTox 2.0)</p>
+        <p style="margin: 6px 0;"><strong>Author:</strong> Sanket Kurve (USN: CS23121)</p>
+        <p style="margin: 6px 0;"><strong>Project Type:</strong> NLP TAE / Natural Language Processing</p>
+        <p style="margin: 6px 0;"><strong>Repository:</strong> <a href="https://github.com/sanket200511/NLP-TAE" target="_blank" style="color: #818cf8; font-weight: 600;">github.com/sanket200511/NLP-TAE</a></p>
+        <p style="margin: 6px 0; opacity: 0.9;"><strong>Core Implementation:</strong> Native multi-script Unicode tokenization, Hinglish elongation compressor, Subword FastText embeddings, Multilingual TF-IDF, and Hybrid Sensitivity ML inference.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -681,10 +687,10 @@ def render_prediction_page(feature_mode: str, model_type: str):
                 is_active = res["binary_predictions"].get(col, 0) == 1
                 color = "#ef4444" if is_active else "#10b981"
                 st.markdown(f"""
-                <div style="border: 1px solid {color}; border-radius: 10px; padding: 8px; text-align: center; background: {'#fef2f2' if is_active else '#f0fdf4'};">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase;">{col.replace('_', ' ')}</div>
+                <div style="border: 1px solid {color}; border-radius: 10px; padding: 8px; text-align: center; background: {'rgba(239, 68, 68, 0.12)' if is_active else 'rgba(16, 185, 129, 0.12)'};">
+                    <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">{col.replace('_', ' ')}</div>
                     <div style="font-size: 1.2rem; font-weight: 800; color: {color};">{score*100:.0f}%</div>
-                    <div style="font-size: 0.75rem; color: {'#991b1b' if is_active else '#065f46'}; font-weight: 600;">{'FLAGGED' if is_active else 'CLEAR'}</div>
+                    <div style="font-size: 0.75rem; color: {'#ef4444' if is_active else '#10b981'}; font-weight: 600;">{'FLAGGED' if is_active else 'CLEAR'}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -693,7 +699,7 @@ def render_prediction_page(feature_mode: str, model_type: str):
         # Explainability Span Highlighting
         st.markdown("#### 🔎 Explainability: Detected Toxic Spans")
         st.markdown(f"""
-        <div style="background: white; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; font-size: 1.05rem; line-height: 1.8;">
+        <div style="background: rgba(125, 125, 125, 0.08); border: 1px solid rgba(125, 125, 125, 0.2); border-radius: 10px; padding: 16px; font-size: 1.05rem; line-height: 1.8;">
             {highlighted_html}
         </div>
         """, unsafe_allow_html=True)
@@ -792,7 +798,7 @@ def main():
     # Footer
     st.markdown("""
     <div class="inditox-footer">
-        🇮🇳 <strong>IndiTox 2.0</strong> • Indian Multilingual Toxic Comment Detector • Built with Streamlit, FastText, Scikit-Learn & Indic NLP
+        🇮🇳 <strong>IndiTox 2.0</strong> • Indian Multilingual Toxic Comment Detector • Developed by <strong>Sanket Kurve (CS23121)</strong>
     </div>
     """, unsafe_allow_html=True)
 

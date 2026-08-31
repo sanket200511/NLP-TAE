@@ -154,24 +154,3 @@ Use these curated test cases to demonstrate real-time classification across lang
 
 ### Q3: How did you solve class imbalance (e.g., rare threats vs common insults)?
 > **Answer**: We applied **Balanced Class Weighting** (`class_weight="balanced"`) in Logistic Regression and tuned prediction probability thresholds with hybrid lexicon sensitivity.
-
----
-
-## 📁 File Structure Reference
-```
-Toxic-Comment-Detector/
-├── .vscode/settings.json       # IDE Python interpreter path
-├── data/
-│   ├── indian_toxic_comments.csv # Multi-lingual Indian dataset
-│   └── stopwords_indic.txt     # Indic & Hinglish stopwords
-├── models/                     # Saved ML models & vectorizers
-├── indic_preprocessor.py       # Multi-script cleaning & language detection
-├── indic_lexicon.py            # Toxic lexicon, highlighter & rephraser
-├── model_engine.py             # FastText, TF-IDF, LR, RF & hybrid inference
-├── generate_dataset.py         # Dataset generator script
-├── train_models.py             # Pre-training and evaluation script
-├── main.py                     # Streamlit interactive web dashboard
-├── requirements.txt            # Python dependencies
-├── README.md                   # Project overview & documentation
-└── DEMO_GUIDE.md               # Complete testing & presentation script
-```

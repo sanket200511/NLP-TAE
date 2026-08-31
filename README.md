@@ -2,16 +2,16 @@
 
 **Author**: Sanket Kurve (USN: CS23121)  
 **Project Type**: NLP TAE / Natural Language Processing  
-**Reference & Foundation**: [SaiVivek7/Toxic-comment-classification](https://github.com/SaiVivek7/Toxic-comment-classification.git) (Mahindra University NLP Course)
+**Repository**: [https://github.com/sanket200511/NLP-TAE](https://github.com/sanket200511/NLP-TAE)
 
 ---
 
 ## 🌟 Executive Summary
 
-**IndiTox 2.0** is an end-to-end NLP and Machine Learning system specifically engineered for detecting **toxic comments in Indian social media spaces**. Unlike traditional English-centric models, IndiTox 2.0 handles the linguistic complexities of the Indian digital sphere, including **Native Indic Scripts** (Devanagari, Tamil, Telugu, Malayalam, Kannada), **Romanized Hinglish / Code-Mixed text**, character elongations, masked vulgarities, and regional profanities.
+**IndiTox 2.0** is an end-to-end NLP and Machine Learning system engineered from the ground up for detecting **toxic comments across Indian social media spaces**. Unlike traditional English-centric models, IndiTox 2.0 is specifically designed for the linguistic nuances of the Indian digital sphere, natively handling **Native Indic Scripts** (Devanagari, Tamil, Telugu, Malayalam, Kannada), **Romanized Hinglish / Code-Mixed text**, character elongations, masked vulgarities, and regional abusive slang.
 
 ### 🌐 Supported Indian Languages
-1. **Hindi (हिन्दी)** — Devanagari script processing & stopword filtering
+1. **Hindi (हिन्दी)** — Native Devanagari script processing & stopword filtering
 2. **Hinglish (Code-Mixed)** — Romanized Hindi slang, abusive phrases, and conversational discourse
 3. **Telugu (తెలుగు / Tenglish)** — Native script and Romanized Dravidian comments
 4. **Tamil (தமிழ் / Tanglish)** — Native script and Romanized Tamil insults & feedback
@@ -86,8 +86,9 @@ IndiTox 2.0 classifies comments across **6 standard multi-label categories**:
 
 ### 1. Prerequisites & Virtual Environment
 ```bash
-# Clone or navigate to the repository
-cd Toxic-Comment-Detector
+# Clone and navigate to the repository
+git clone https://github.com/sanket200511/NLP-TAE.git
+cd NLP-TAE
 
 # Activate the virtual environment (Windows)
 .\venv\Scripts\activate
@@ -116,9 +117,3 @@ streamlit run main.py
 | :--- | :---: | :---: | :---: | :---: |
 | **TF-IDF + Logistic Regression (OvR)** | **0.992** | **0.994** | **0.993** | **0.003** |
 | **FastText Subwords + Random Forest** | **0.943** | **0.972** | **0.969** | **0.018** |
-
----
-
-## 📜 Acknowledgments
-- Inspired by the research and repository of **Vivek et al.** ([Toxic-comment-classification](https://github.com/SaiVivek7/Toxic-comment-classification.git)) at Mahindra University.
-- Supported by the **Jigsaw & Kaggle** toxic comment challenge standards adapted for Indian regional language spaces.
