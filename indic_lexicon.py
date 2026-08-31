@@ -9,42 +9,23 @@ from typing import List, Dict, Tuple, Set
 
 # Indian Toxic Lexicon categorized by label
 INDIC_TOXIC_LEXICON: Dict[str, Set[str]] = {
-    "severe_toxic": {
-        "madarchod", "behenchod", "bhenchod", "bhosdike", "bsdk", "mc", "bc", "gaand faadunga",
-        "thevidiya", "thevidya", "lanjakodaka", "lanjoduku", "myre", "thayoli", "kandaraoli",
-        "sulemagane", "sulemaga", "motherfucker", "हरामी", "कुत्ते के पिल्ले", "चोद", "chod",
-        "gaand me goli", "vettama vida maaten", "nariki champestha", "bhadvya", "gandu",
-        "गांडू", "भडव्या", "गांडीत"
-    },
-    "obscene": {
-        "lodu", "loda", "lauda", "chutiya", "chutiye", "chut", "gaand", "gand", "randi", "raand",
-        "bhadwa", "bhadwe", "bhadwaa", "soothu", "oombu", "punda", "pundamavan", "sunni",
-        "deng", "dengi", "dengey", "thunne", "fuck", "fucking", "bitch", "asshole", "dick",
-        "cunt", "pussy", "गांड", "लौड़ा", "लौड़े", "रंडी", "भड़वे", "भोसड़ी", "भडवा", "चूतिया", "रांड"
-    },
-    "threat": {
-        "maar dalunga", "jaan se maar", "goli maar", "encounter", "bheja uda", "khataam kar dunga",
-        "champi", "champestha", "lepeyyali", "vettum", "konnu", "vettruven", "jeeva thegithini",
-        "kill you", "murder you", "break your bones", "smash your skull", "bomb your", "shoot every",
-        "track your ip", "come to your home", "मार डालूंगा", "गोली मार", "खत्म कर देंगे", "उड़ा देंगे",
-        "tula maarin", "maariin", "vadh karin", "तुला मारीन", "मारून टाकीन"
+    "identity_hate": {
+        "andhbhakt", "black monkeys", "chamar", "cow piss", "dalit", "deshdrohi", "gobar bhakt", "gutka eaters", "jathikare", "jihadi", "katuwe", "katwe", "khalistani", "matham vallani", "mathatha azhikanum", "momo sellers", "mulla", "mulle", "neech jaati", "pakistan jao", "sanghi terror", "terrorist", "अंधभक्तों", "देशद्रोही", "मुल्ले"
     },
     "insult": {
-        "pagal", "paagal", "bewakoof", "gandha", "kutta", "kutte", "suar", "chomu", "loser",
-        "clown", "gadhapan", "gadhe", "feku", "chapri", "bhikhari", "aukat", "do kaudi",
-        "waste fellow", "muttal", "loose madhiri", "vedhava", "mandatharam", "bodhavum illa",
-        "thale kettideya", "idiot", "dumb", "stupid", "barking", "पागल", "गधे", "कुत्ता", "कमीने",
-        "murkha", "vedya", "vedabhada", "bhikarda", "मूर्ख", "वेड्या", "नालायक", "nalayak"
+        "aukat", "auladheen", "backar", "badboodar", "barking", "bewakoof", "bhadva", "bhikarda", "bhikhari", "bhootnika", "bimaar", "binbheja", "bodhavum illa", "chapri", "chatri", "chinaal", "chomu", "clown", "danda", "do kaudi", "dum", "dumb", "feku", "gadhapan", "gadhe", "gandha", "gandi", "gandnatije", "gandpaidaish", "hijra", "hinjda", "idiot", "joon", "jungli", "kaat", "keeda", "keera", "kute", "kutiya", "kutta", "kutte", "kutti", "kutton", "loose madhiri", "loser", "mandatharam", "murkha", "muttal", "najayaz", "nalayak", "paagal", "pagal", "pissu", "poot", "potty", "saala", "safaid", "soover", "soower", "stupid", "suar", "tatti", "thale kettideya", "vedabhada", "vedhava", "vedya", "waste fellow", "कमीने", "कुत्ता", "गधे", "नालायक", "पागल", "मूर्ख", "वेड्या"
     },
-    "identity_hate": {
-        "jihadi", "mulle", "mulla", "katuwe", "katwe", "gobar bhakt", "andhbhakt", "khalistani",
-        "chamar", "neech jaati", "dalit", "gutka eaters", "momo sellers", "black monkeys",
-        "terrorist", "pakistan jao", "deshdrohi", "matham vallani", "mathatha azhikanum",
-        "jathikare", "cow piss", "sanghi terror", "मुल्ले", "अंधभक्तों", "देशद्रोही"
+    "obscene": {
+        "aatanki", "asshole", "atankvadi", "atankwadi", "bahenke", "bambu", "beechka", "beej", "behendi", "bhadwa", "bhadwaa", "bhadwe", "bitch", "chaatu", "chikna", "chode", "chodela", "chodho", "chodun", "choos", "chullugand", "chus", "chut", "chutia", "chutiya", "chutiye", "cunt", "deng", "dengey", "dengi", "dick", "fuck", "fucking", "gaand", "gand", "gandkate", "ghasti", "ghussa", "haraam", "haraami", "jamai", "jhalla", "jihadi", "kaalu", "kali", "laltern", "lauda", "loda", "lodu", "lundtopi", "maarey", "meetha", "momedankatue", "mullekatue", "mullekebaal", "mullikatui", "nabaal", "nirodh", "oombu", "padma", "paidaishikeeda", "punda", "pundamavan", "pussy", "raand", "randi", "sadi", "soothu", "sunni", "thunne", "vahiyaat", "गांड", "चूतिया", "पुच्चीत", "फोकणीच्या", "फोकणीच्याचा", "फोकणीच्यात", "फोद्री", "फोद्रीचा", "फोद्रीच्या", "फोद्रीच्यात", "फोद्रीत", "बावळट", "बावळटच्या", "बावळटत", "बुडाला", "बुल्ली", "बुल्लीचा", "बुल्लीत", "बेअक्कल", "बेशरम", "बोचा", "बोचाच्या", "बोचात", "बोच्याबुल्लीच्या", "भडवा", "भडविच्याभिकारचोट", "भडव्या", "भडव्यात", "भड़वे", "भुंड्", "भुंड्त", "भुंड्यात", "भुंड्यातत", "भोक", "भोकचा", "भोकत", "भोकाच्या", "भोसड़ी", "भोसडा", "भोसडाचा", "भोसडात", "भोसडीच्या", "भोसडीच्यात", "मंद", "माईचा", "माईचात", "माईच्या", "मादरचोद", "मारीच्या", "मारीच्यात", "मुठ्ठया", "मुठ्ठयाचा", "मुठ्ठयात", "मूर्ख", "रंडी", "रंडीचा", "रंडीच्या", "रंडीच्यात", "रंडीत", "रांड", "रांडचा", "रांडच्या", "रांडीच्या", "रांडीच्यात", "लवड्या", "लवड्याचा", "लवड्याच्या", "लवड्यात", "लौड़ा", "लौड़े", "साला", "हरामखोर", "हलकट"
+    },
+    "severe_toxic": {
+        "baajer", "baapchu", "babla", "bachachod", "bachchechod", "bachichod", "bahanchod", "bahencho", "bahenchod", "balchod", "bancho", "banda", "bc", "behenchod", "betichod", "bhadvya", "bhagatchod", "bhaichod", "bhandwe", "bhenchod", "bhonsdiwala", "bhonsriwala", "bhosad", "bhosadchod", "bhosda", "bhosdike", "biwichod", "booblay", "booby", "bsdk", "buble", "budh", "bum", "bumchod", "bur", "ched", "chhola", "chinaal", "chod", "chodhunga", "chodoonga", "chodra", "chodu", "chooche", "choochi", "choosu", "choot", "choud", "chuchi", "chudai", "chudaikhana", "chudwaya", "chunni", "chut", "chute", "chutiyapa", "cunt", "cuntmama", "fakeerchod", "fateychu", "gaand", "gaand faadunga", "gaand me goli", "gaandfat", "gaandmarau", "gaandmasti", "gaandu", "gadde", "gandu", "hazaarchu", "jhaat", "jhant", "jhanten", "kandaraoli", "katua", "khandanchod", "kussi", "lanjakodaka", "lanjoduku", "lauda", "laude", "lavander", "lavda", "lawda", "lundoos", "lundâ", "maacho", "maadherchod", "machudi", "madarchod", "maka", "makhanchudai", "mammey", "mc", "motherfucker", "muth", "myre", "nariki champestha", "neech", "parichod", "patichod", "phudi", "pucchi", "raand", "raandsaala", "raatchuda", "randi", "randwa", "rundi", "shorba", "suhaagchudai", "sulemaga", "sulemagane", "takke", "tatte", "thayoli", "thevidiya", "thevidya", "toota", "toto", "vettama vida maaten", "अकराम्हशी", "अकराम्हशीचा", "अकराम्हशीच्या", "आंद्या", "आंद्याचा", "आंद्याच्या", "आंद्यात", "आईघाला", "आईघाल्", "आईघाल्या", "आईघाल्याचा", "आईजवाडा", "आईजवाडाचा", "आईझव", "आईझवली", "आईझवलीचा", "आईझवाडा", "आईझवाडाचा", "कँडल", "कँडलचा", "कँडलच्या", "कुत्ते के पिल्ले", "कृतघ्न", "गांड", "गांडचा", "गांडच्या", "गांडीचा", "गांडीत", "गांडू", "गांडूचा", "गांडूच्या", "गांडूत", "गाढव", "गाढवागांडुळ", "गोट्या", "गोट्याचा", "गोट्याच्या", "गोट्यात", "चावट", "चीनाल", "चीनालचा", "चीनालच्या", "चुत", "चुतचा", "चुतच्या", "चुतत", "चुतमारीचा", "चुतमारीच्या", "चुतमारीच्यात", "चोद", "छिनाल", "छिनालचा", "छिनालच्या", "झवली", "झवलीचा", "झवलीत", "झवाड्या", "झवाड्याचा", "झवाड्याच्या", "झाटू", "झाटूचा", "झाटूच्या", "झाटूत", "नालायकच्यायला", "पागलगुदा", "पुच्ची", "पुच्चीचा", "पुच्चीच्या", "भडव्या", "हरामी"
+    },
+    "threat": {
+        "bheja uda", "bomb your", "break your bones", "champestha", "champi", "come to your home", "encounter", "goli maar", "jaan se maar", "jeeva thegithini", "khataam kar dunga", "kill you", "konnu", "lepeyyali", "maar dalunga", "maariin", "murder you", "shoot every", "smash your skull", "track your ip", "tula maarin", "vadh karin", "vettruven", "vettum", "उड़ा देंगे", "खत्म कर देंगे", "गोली मार", "तुला मारीन", "मार डालूंगा", "मारून टाकीन"
     },
     "toxic": {
-        "bakwas", "faltu", "ghatiya", "shut up", "chup", "chup kar", "nikal", "dimaag bech",
-        "aapas me lado", "hate you", "worst", "disgusting", "rubbish", "nonsense", "बकवास", "फालतू"
+        "aapas me lado", "badir", "badirchand", "bakland", "bakwas", "bhains", "bhajiye", "bhoot", "chaarpai", "chatani", "chipkali", "chipkili", "chup", "chup kar", "dhakkan", "dimaag bech", "disgusting", "doob", "faltu", "gadha", "ghatiya", "haathi", "hate you", "jaanvar", "jaat", "khatmal", "khota", "lassan", "makkhi", "nikal", "nonsense", "pasine", "pathe", "rubbish", "shut up", "ullu", "unday", "worst", "फालतू", "बकवास"
     }
 }
 

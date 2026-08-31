@@ -142,9 +142,10 @@ def detect_indic_language(text: str) -> str:
         "kaise", "kaha", "kahan", "apna", "apni", "kuch", "bohot", "bahut", "achha", "accha"
     }
     marathi_roman_markers = {
-        "aahe", "aahet", "kay", "kasa", "kashi", "navta", "sobat", "bhava", "khup", "chan", 
-        "tumhi", "amhi", "majha", "tujha", "chalalay", "mitra", "bhau", "mhanje", "kuta",
-        "nantar", "lavkar", "udya", "aaj", "karan", "pan", "bhavano"
+        "aahe", "aahet", "aahes", "ekdam", "manus", "sarkha", "chya", "kay", "kasa", "kashi", 
+        "navta", "sobat", "bhava", "khup", "chan", "tumhi", "amhi", "majha", "tujha", 
+        "chalalay", "mitra", "bhau", "mhanje", "kuta", "nantar", "lavkar", "udya", "aaj", 
+        "karan", "pan", "bhavano"
     }
     telugu_markers = {"bagundi", "chala", "cheyandi", "nuvvu", "neeku", "nannu", "lanja", "deng", "kukka", "vedhava"}
     tamil_markers = {"irukku", "nandri", "romba", "unakku", "enna", "thevidiya", "muttal", "pesadha", "oombu", "punda"}
