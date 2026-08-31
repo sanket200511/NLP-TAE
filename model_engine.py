@@ -2,7 +2,7 @@
 """
 High-Accuracy Multi-Model Engine for Indian Multilingual Toxic Comment Detection.
 Integrates FastText Subwords, Multi-Granular TF-IDF (word + char n-grams), Calibrated Logistic Regression,
-Ensemble Random Forest, and Context-Aware Hybrid Sensitivity Scoring.
+Ensemble Random Forest, Calibrated Support Vector Classifier, and Context-Aware Hybrid Sensitivity Scoring.
 """
 
 import os
@@ -16,6 +16,8 @@ from gensim.models import FastText
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import LinearSVC
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.metrics import (
     f1_score, hamming_loss, classification_report,
@@ -111,8 +113,8 @@ class IndiToxModelEngine:
         X_train: Any,
         y_train: np.ndarray,
         feature_mode: str = "tfidf"
-    ) -> Tuple[Any, Any]:
-        """Train calibrated Logistic Regression (OvR) and Random Forest ensemble."""
+    ) -> Tuple[Any, Any, Any]:
+        """Train calibrated Logistic Regression, Random Forest, and Calibrated SVM (LinearSVC)."""
         lr = OneVsRestClassifier(
             LogisticRegression(
                 solver="liblinear",
@@ -134,22 +136,41 @@ class IndiToxModelEngine:
             n_jobs=-1
         )
 
+        # Calibrated Support Vector Machine
+        svm = OneVsRestClassifier(
+            CalibratedClassifierCV(
+                estimator=LinearSVC(
+                    C=1.2,
+                    class_weight="balanced",
+                    random_state=42,
+                    dual=False
+                ),
+                method="sigmoid",
+                cv=3
+            ),
+            n_jobs=-1
+        )
+
         lr.fit(X_train, y_train)
         rf.fit(X_train, y_train)
+        svm.fit(X_train, y_train)
 
         if feature_mode not in self._models_cache:
             self._models_cache[feature_mode] = {}
         self._models_cache[feature_mode]["Logistic Regression"] = lr
         self._models_cache[feature_mode]["Random Forest"] = rf
+        self._models_cache[feature_mode]["Calibrated SVM"] = svm
 
         joblib.dump(lr, str(MODELS_DIR / f"logistic_indic_{feature_mode}.pkl"))
         joblib.dump(rf, str(MODELS_DIR / f"random_forest_indic_{feature_mode}.pkl"))
+        joblib.dump(svm, str(MODELS_DIR / f"svm_indic_{feature_mode}.pkl"))
 
-        return lr, rf
+        return lr, rf, svm
 
-    def load_models(self, feature_mode: str = "tfidf") -> Tuple[Optional[Any], Optional[Any]]:
+    def load_models(self, feature_mode: str = "tfidf") -> Tuple[Optional[Any], Optional[Any], Optional[Any]]:
         lr = self._models_cache.get(feature_mode, {}).get("Logistic Regression")
         rf = self._models_cache.get(feature_mode, {}).get("Random Forest")
+        svm = self._models_cache.get(feature_mode, {}).get("Calibrated SVM")
 
         if lr is None:
             lr_path = MODELS_DIR / f"logistic_indic_{feature_mode}.pkl"
@@ -167,18 +188,27 @@ class IndiToxModelEngine:
                     self._models_cache[feature_mode] = {}
                 self._models_cache[feature_mode]["Random Forest"] = rf
 
-        return lr, rf
+        if svm is None:
+            svm_path = MODELS_DIR / f"svm_indic_{feature_mode}.pkl"
+            if svm_path.exists():
+                svm = joblib.load(str(svm_path))
+                if feature_mode not in self._models_cache:
+                    self._models_cache[feature_mode] = {}
+                self._models_cache[feature_mode]["Calibrated SVM"] = svm
+
+        return lr, rf, svm
 
     def predict_hybrid(
         self,
         text: str,
-        model_type: str = "Logistic Regression",
+        model_type: str = "Ensemble (Soft Voting)",
         feature_mode: str = "tfidf"
     ) -> Dict[str, Any]:
         """
         High-accuracy hybrid prediction:
         Combines statistical ML probabilities with Indic toxic lexicon sensitivity.
         Provides zero-day detection, context calibration, and strict clean filtering.
+        Supports single model prediction and Soft Voting Ensemble combinations.
         """
         cleaned = clean_indic_text(text, remove_stopwords=False)
         detected_lang = detect_indic_language(text)
@@ -195,28 +225,37 @@ class IndiToxModelEngine:
             lexicon_boost["toxic"] = max(lexicon_boost["toxic"], 0.70)
 
         # Load specific model for feature_mode
-        lr, rf = self.load_models(feature_mode)
-        model = lr if model_type == "Logistic Regression" else rf
+        lr, rf, svm = self.load_models(feature_mode)
 
+        # Get features
+        if feature_mode == "tfidf":
+            vec = self.load_tfidf()
+            feat = vec.transform([cleaned]) if vec is not None else None
+        else:
+            feat = self.embed_comment_fasttext(cleaned).reshape(1, -1)
+
+        def get_model_proba(model, f):
+            if model is None or f is None:
+                return np.zeros(len(LABEL_COLS))
+            raw_proba = model.predict_proba(f)
+            if isinstance(raw_proba, list):
+                return np.array([p[0, 1] if p.shape[1] > 1 else p[0, 0] for p in raw_proba])
+            return raw_proba[0]
+
+        # Calculate model probabilities
         probs = np.zeros(len(LABEL_COLS))
-
-        if model is not None:
-            if feature_mode == "tfidf":
-                vec = self.load_tfidf()
-                if vec is not None:
-                    feat = vec.transform([cleaned])
-                    raw_proba = model.predict_proba(feat)
-                    if isinstance(raw_proba, list):
-                        probs = np.array([p[0, 1] if p.shape[1] > 1 else p[0, 0] for p in raw_proba])
-                    else:
-                        probs = raw_proba[0]
-            else:
-                feat = self.embed_comment_fasttext(cleaned).reshape(1, -1)
-                raw_proba = model.predict_proba(feat)
-                if isinstance(raw_proba, list):
-                    probs = np.array([p[0, 1] if p.shape[1] > 1 else p[0, 0] for p in raw_proba])
-                else:
-                    probs = raw_proba[0]
+        if model_type == "Logistic Regression":
+            probs = get_model_proba(lr, feat)
+        elif model_type == "Random Forest":
+            probs = get_model_proba(rf, feat)
+        elif model_type == "Calibrated SVM":
+            probs = get_model_proba(svm, feat)
+        else:
+            # Ensemble (Soft Voting)
+            p_lr = get_model_proba(lr, feat)
+            p_rf = get_model_proba(rf, feat)
+            p_svm = get_model_proba(svm, feat)
+            probs = (p_lr + p_rf + p_svm) / 3.0
 
         # Combine ML probability with Lexicon boost
         final_probs = {}

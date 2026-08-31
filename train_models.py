@@ -27,21 +27,23 @@ print("Training FastText subword model...")
 sentences = [tokenize_indic(t) for t in texts]
 ft = engine.train_fasttext(sentences, vector_size=100, epochs=15)
 
-print("Training Logistic Regression and Random Forest on TF-IDF...")
-lr_tfidf, rf_tfidf = engine.train_models(X_tfidf, y, feature_mode="tfidf")
+print("Training Logistic Regression, Random Forest, and Calibrated SVM on TF-IDF...")
+lr_tfidf, rf_tfidf, svm_tfidf = engine.train_models(X_tfidf, y, feature_mode="tfidf")
 
 # FastText embeddings
 X_ft = np.vstack([engine.embed_comment_fasttext(t) for t in texts])
-print("Training Logistic Regression and Random Forest on FastText...")
-lr_ft, rf_ft = engine.train_models(X_ft, y, feature_mode="fasttext")
+print("Training Logistic Regression, Random Forest, and Calibrated SVM on FastText...")
+lr_ft, rf_ft, svm_ft = engine.train_models(X_ft, y, feature_mode="fasttext")
 
 print("Evaluating TF-IDF models:")
 pred_lr = lr_tfidf.predict(X_tfidf)
 pred_rf = rf_tfidf.predict(X_tfidf)
+pred_svm = svm_tfidf.predict(X_tfidf)
 print("LR Metrics:", compute_multilabel_metrics(y, pred_lr))
 print("RF Metrics:", compute_multilabel_metrics(y, pred_rf))
+print("Calibrated SVM Metrics:", compute_multilabel_metrics(y, pred_svm))
 
-print("Testing hybrid prediction on sample Indian comments:")
+print("Testing hybrid ensemble predictions on sample Indian comments:")
 samples = [
     "नमस्ते सर, बहुत अच्छा वीडियो था।",
     "Tu bilkul pagal hai kya? dimag nahi hai.",
@@ -50,7 +52,7 @@ samples = [
     "Super anna, chala bagundi video!"
 ]
 for s in samples:
-    res = engine.predict_hybrid(s, model_type="Logistic Regression", feature_mode="tfidf")
+    res = engine.predict_hybrid(s, model_type="Ensemble (Soft Voting)", feature_mode="tfidf")
     print(f"\nText: {s}")
     print(f"Detected Lang: {res['detected_language']} | Toxic: {res['is_toxic']} | Score: {res['overall_score']:.2f}")
     print(f"Predictions: {res['binary_predictions']}")

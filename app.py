@@ -45,7 +45,7 @@ def index():
 def classify():
     data = request.get_json() or {}
     comment = data.get("comment", "").strip()
-    model_type = data.get("model_type", "Logistic Regression")
+    model_type = data.get("model_type", "Ensemble (Soft Voting)")
     feature_mode = data.get("feature_mode", "tfidf")
 
     if not comment:

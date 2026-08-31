@@ -42,6 +42,13 @@ OBFUSCATION_MAP = {
     r"\blanj[@a]k[o0]daka\b": "lanjakodaka",
     r"\bthevidiy[@a]\b": "thevidiya",
     r"\bsul[e3]magan[e3]\b": "sulemagane",
+    r"\bl[\.\s_]*a[\.\s_]*u[\.\s_]*d[\.\s_]*a\b": "lauda",
+    r"\bg[\.\s_]*a[\.\s_]*n[\.\s_]*d[\.\s_]*u\b": "gandu",
+    r"\bc[\.\s_]*h[\.\s_]*u[\.\s_]*t[\.\s_]*i[\.\s_]*y[\.\s_]*a\b": "chutiya",
+    r"\bl[\.\s_]*o[\.\s_]*d[\.\s_]*u\b": "lodu",
+    r"\br[\.\s_]*a[\.\s_]*n[\.\s_]*d[\.\s_]*i\b": "randi",
+    r"\bb[\.\s_]*h[\.\s_]*a[\.\s_]*d[\.\s_]*v[\.\s_]*y[\.\s_]*a\b": "bhadvya",
+    r"\bv[\.\s_]*e[\.\s_]*d[\.\s_]*y[\.\s_]*a\b": "vedya",
 }
 
 # Stopwords loader

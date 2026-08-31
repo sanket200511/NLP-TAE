@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
             gaugeFill.style.backgroundColor = "var(--danger)";
         }
 
-        // Render Category Pills
+        // Render Category Pills with visual progress bars
         categoriesGrid.innerHTML = "";
         categoriesList.forEach(cat => {
             const prob = data.probabilities[cat] || 0.0;
@@ -166,6 +166,9 @@ document.addEventListener("DOMContentLoaded", () => {
             pill.innerHTML = `
                 <div style="font-size: 0.72rem; opacity: 0.8; text-transform: uppercase;">${cat.replace('_', ' ')}</div>
                 <div style="font-size: 1.05rem; font-weight: 700; margin-top: 2px;">${Math.round(prob * 100)}%</div>
+                <div style="width: 100%; height: 4px; background-color: var(--border-color); border-radius: 99px; margin-top: 6px; overflow: hidden;">
+                    <div style="width: ${Math.round(prob * 100)}%; height: 100%; background-color: ${isFlagged ? 'var(--danger)' : 'var(--accent)'}; border-radius: 99px;"></div>
+                </div>
             `;
             categoriesGrid.appendChild(pill);
         });
@@ -173,19 +176,44 @@ document.addEventListener("DOMContentLoaded", () => {
         // Set Highlighted Spans
         highlightOutput.innerHTML = data.highlighted_html || rawText;
 
-        // Polite Suggestions
+        // Polite Suggestions with interactive copy triggers
         suggestionsList.innerHTML = "";
         if (data.suggestions && data.suggestions.length > 0) {
             suggestionsBox.classList.remove("hidden");
             data.suggestions.forEach(s => {
                 const item = document.createElement("div");
-                item.style.marginBottom = "8px";
+                item.className = "suggestion-item";
+                item.style.display = "flex";
+                item.style.justifyContent = "space-between";
+                item.style.alignItems = "center";
+                item.style.marginBottom = "10px";
+                item.style.padding = "10px";
+                item.style.borderRadius = "8px";
+                item.style.border = "1px solid rgba(16, 185, 129, 0.15)";
                 item.innerHTML = `
-                    <div style="font-weight: 600; font-size: 0.8rem; color: var(--success); margin-bottom: 2px;">Instead of: "${s.toxic_phrase}"</div>
-                    <div style="font-style: italic; font-size: 0.95rem;">👉 "${s.polite_suggestion}"</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 0.8rem; color: var(--success); margin-bottom: 2px;">Instead of: "${s.toxic_phrase}"</div>
+                        <div style="font-style: italic; font-size: 0.95rem; opacity: 0.9;">👉 "${s.polite_suggestion}"</div>
+                    </div>
+                    <button class="icon-btn copy-btn" title="Copy Polite Rewrite" style="margin-left: 12px; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; background-color: var(--bg-input);">
+                        <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
+                    </button>
                 `;
+                
+                const copyBtn = item.querySelector(".copy-btn");
+                copyBtn.addEventListener("click", () => {
+                    navigator.clipboard.writeText(s.polite_suggestion);
+                    copyBtn.innerHTML = `<i data-lucide="check" style="width: 15px; height: 15px; color: var(--success);"></i>`;
+                    if (window.lucide) window.lucide.createIcons();
+                    setTimeout(() => {
+                        copyBtn.innerHTML = `<i data-lucide="copy" style="width: 15px; height: 15px;"></i>`;
+                        if (window.lucide) window.lucide.createIcons();
+                    }, 2000);
+                });
+                
                 suggestionsList.appendChild(item);
             });
+            if (window.lucide) window.lucide.createIcons();
         } else {
             suggestionsBox.classList.add("hidden");
         }
