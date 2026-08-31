@@ -89,6 +89,9 @@ def moderate_file():
         file_stream = io.StringIO(uploaded_file.stream.read().decode("utf-8-sig"), newline="")
         reader = csv.DictReader(file_stream)
         
+        if reader.fieldnames is None:
+            return jsonify({"error": "Failed to parse CSV headers"}), 400
+
         if comment_col not in reader.fieldnames:
             return jsonify({"error": f"Column '{comment_col}' not found in CSV headers"}), 400
 

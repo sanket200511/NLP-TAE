@@ -13,25 +13,28 @@ INDIC_TOXIC_LEXICON: Dict[str, Set[str]] = {
         "madarchod", "behenchod", "bhenchod", "bhosdike", "bsdk", "mc", "bc", "gaand faadunga",
         "thevidiya", "thevidya", "lanjakodaka", "lanjoduku", "myre", "thayoli", "kandaraoli",
         "sulemagane", "sulemaga", "motherfucker", "हरामी", "कुत्ते के पिल्ले", "चोद", "chod",
-        "gaand me goli", "vettama vida maaten", "nariki champestha"
+        "gaand me goli", "vettama vida maaten", "nariki champestha", "bhadvya", "gandu",
+        "गांडू", "भडव्या", "गांडीत"
     },
     "obscene": {
         "lodu", "loda", "lauda", "chutiya", "chutiye", "chut", "gaand", "gand", "randi", "raand",
         "bhadwa", "bhadwe", "bhadwaa", "soothu", "oombu", "punda", "pundamavan", "sunni",
         "deng", "dengi", "dengey", "thunne", "fuck", "fucking", "bitch", "asshole", "dick",
-        "cunt", "pussy", "गांड", "लौड़ा", "लौड़े", "रंडी", "भड़वे", "भोसड़ी"
+        "cunt", "pussy", "गांड", "लौड़ा", "लौड़े", "रंडी", "भड़वे", "भोसड़ी", "भडवा", "चूतिया", "रांड"
     },
     "threat": {
         "maar dalunga", "jaan se maar", "goli maar", "encounter", "bheja uda", "khataam kar dunga",
         "champi", "champestha", "lepeyyali", "vettum", "konnu", "vettruven", "jeeva thegithini",
         "kill you", "murder you", "break your bones", "smash your skull", "bomb your", "shoot every",
-        "track your ip", "come to your home", "मार डालूंगा", "गोली मार", "खत्म कर देंगे", "उड़ा देंगे"
+        "track your ip", "come to your home", "मार डालूंगा", "गोली मार", "खत्म कर देंगे", "उड़ा देंगे",
+        "tula maarin", "maariin", "vadh karin", "तुला मारीन", "मारून टाकीन"
     },
     "insult": {
         "pagal", "paagal", "bewakoof", "gandha", "kutta", "kutte", "suar", "chomu", "loser",
         "clown", "gadhapan", "gadhe", "feku", "chapri", "bhikhari", "aukat", "do kaudi",
         "waste fellow", "muttal", "loose madhiri", "vedhava", "mandatharam", "bodhavum illa",
-        "thale kettideya", "idiot", "dumb", "stupid", "barking", "पागल", "गधे", "कुत्ता", "कमीने"
+        "thale kettideya", "idiot", "dumb", "stupid", "barking", "पागल", "गधे", "कुत्ता", "कमीने",
+        "murkha", "vedya", "vedabhada", "bhikarda", "मूर्ख", "वेड्या", "नालायक", "nalayak"
     },
     "identity_hate": {
         "jihadi", "mulle", "mulla", "katuwe", "katwe", "gobar bhakt", "andhbhakt", "khalistani",
@@ -58,7 +61,10 @@ POLITE_REWRITE_MAP: Dict[str, str] = {
     "muttal": "Please provide clearer explanations.",
     "lanjakodaka": "Please avoid abusive remarks.",
     "dimag nahi hai kya": "Kripya dobara soch vichar karein / Please reconsider this point.",
-    "apni aukaat me reh": "Aapas me aadar aur sammaan se baat karein / Let's treat everyone with dignity."
+    "apni aukaat me reh": "Aapas me aadar aur sammaan se baat karein / Let's treat everyone with dignity.",
+    "tula maarin": "Mala tumcha vichaar patla nahi / I do not agree with your perspective.",
+    "bhadvya": "Mitra (Kripya aadarane bola / Please speak respectfully).",
+    "vedya": "Kripya punha vichar kara / Please reconsider this point."
 }
 
 

@@ -70,8 +70,13 @@ clean_samples = [
     ("भारत के सभी नागरिकों को आपस में प्रेम और सौहार्द से रहना चाहिए।", "Hindi"),
     ("शिक्षा ही किसी भी राष्ट्र की प्रगति का आधार है।", "Hindi"),
     ("कृपया इस विषय पर एक विस्तृत लेख भी साझा करें।", "Hindi"),
-    ("आज का दिन बहुत शुभ और मंगलमय हो।", "Hindi"),
-    ("वैज्ञानिकों के अथक परिश्रम से देश का नाम रोशन हुआ है।", "Hindi")
+    ("वैज्ञानिकों के अथक परिश्रम से देश का नाम रोशन हुआ है।", "Hindi"),
+    ("नवीन व्हिडिओ खूप छान आहे भाऊ, खूप माहिती मिळाली.", "Marathi"),
+    ("तुमचे स्पष्टीकरण मला खूप आवडले, धन्यवाद सोबती.", "Marathi"),
+    ("पुढील व्हिडिओ कधी येईल? आम्ही वाट पाहत आहोत.", "Marathi"),
+    ("खूप छान काम करत आहात, असेच पुढे चालू ठेवा.", "Marathi"),
+    ("bhava khup chan explanation aahe, sagla samajhla.", "Marathi (Romanized)"),
+    ("tumhi changla kaam karat aahat, keep it up bhavano.", "Marathi (Romanized)")
 ]
 
 # Toxic categories samples: (text, language, toxic, severe_toxic, obscene, threat, insult, identity_hate)
@@ -138,7 +143,15 @@ toxic_samples = [
     ("katuwe saale, tumhara dharam hi nafrat aur dange sikhata hai.", "Hinglish", 1, 0, 1, 0, 1, 1),
     ("sanghi terror supporters deserve no human rights in this country.", "Indian_English", 1, 0, 0, 0, 1, 1),
     ("ये मुल्ले देशद्रोही हैं, इनको खत्म करो ये देश के दुश्मन हैं।", "Hindi", 1, 1, 0, 1, 1, 1),
-    ("इन गोबर भक्तों और अंधभक्तों को जूते मारो।", "Hindi", 1, 0, 0, 0, 1, 1)
+    ("इन गोबर भक्तों और अंधभक्तों को जूते मारो।", "Hindi", 1, 0, 0, 0, 1, 1),
+    ("तू मूर्ख आहेस का? तुला काहीच समजून सांगता येत नाही.", "Marathi", 1, 0, 0, 0, 1, 0),
+    ("वेड्यासारखे बोलू नको, तुझी लायकी नाही इथे बोलायची.", "Marathi", 1, 0, 0, 0, 1, 0),
+    ("गप्प बस गांडू साल्या, तुझी खूप माज आली आहे.", "Marathi", 1, 1, 1, 0, 1, 0),
+    ("तुला मारून टाकीन जर पुन्हा इथे दिसला तर.", "Marathi", 1, 1, 0, 1, 1, 0),
+    ("tu murkha aahes ka? kasa boltoy samajhta ka.", "Marathi (Romanized)", 1, 0, 0, 0, 1, 0),
+    ("vedya sarkha bolu nako, nalayak manus aahes tu.", "Marathi (Romanized)", 1, 0, 0, 0, 1, 0),
+    ("bhadvya saale, gapp bas, tujhi gand pelun takin.", "Marathi (Romanized)", 1, 1, 1, 0, 1, 0),
+    ("tula maarin bhava, mazya nadala lagu nako.", "Marathi (Romanized)", 1, 1, 0, 1, 1, 0)
 ]
 
 rows = []

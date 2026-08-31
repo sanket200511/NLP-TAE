@@ -95,7 +95,7 @@ def deobfuscate_text(text: str) -> str:
 def detect_indic_language(text: str) -> str:
     """
     Detect the primary Indian language or script of a given text.
-    Returns: 'Hindi', 'Tamil', 'Telugu', 'Malayalam', 'Kannada', 'Bengali', 'Hinglish', or 'Indian_English'.
+    Returns: 'Hindi', 'Marathi', 'Tamil', 'Telugu', 'Malayalam', 'Kannada', 'Bengali', 'Hinglish', 'Marathi (Romanized)', or 'Indian_English'.
     """
     if not text or not str(text).strip():
         return "Unknown"
@@ -120,15 +120,31 @@ def detect_indic_language(text: str) -> str:
     # Check Indic scripts
     max_indic_lang = max(counts, key=counts.get)
     if counts[max_indic_lang] > 0 and counts[max_indic_lang] >= latin_count * 0.3:
+        if max_indic_lang == "Hindi":
+            # Differentiate Hindi from Marathi (both use Devanagari)
+            marathi_devanagari_markers = {
+                "आहे", "आहेत", "भावा", "नाही", "काय", "कसे", "करून", "शिकलो", "नव्हता", 
+                "खूप", "छान", "भाऊ", "मित्रा", "तुझी", "माझी", "माझा", "तुझा", "होता", 
+                "होती", "करत", "चाललंय", "मस्त", "करू", "करून", "मुलगा", "मुलगी"
+            }
+            words_devanagari = set(re.findall(r'[\u0900-\u097F]+', text_str))
+            if words_devanagari & marathi_devanagari_markers:
+                return "Marathi"
+            return "Hindi"
         return max_indic_lang
 
-    # If predominantly Latin script, check for Hinglish vs Dravidian Romanized vs English
+    # If predominantly Latin script, check for Hinglish vs Dravidian Romanized vs English vs Romanized Marathi
     lower = text_str.lower()
     hinglish_markers = {
         "bhai", "yaar", "kya", "kyun", "kyu", "hai", "hain", "nahi", "nhi", "tera", "meri",
         "mera", "tere", "uska", "chup", "saale", "sale", "bc", "mc", "bsdk", "gaand", "lodu",
         "chutiya", "bakwas", "pagal", "bol", "raha", "rahi", "hoga", "karega", "aaya", "aayi",
         "kaise", "kaha", "kahan", "apna", "apni", "kuch", "bohot", "bahut", "achha", "accha"
+    }
+    marathi_roman_markers = {
+        "aahe", "aahet", "kay", "kasa", "kashi", "navta", "sobat", "bhava", "khup", "chan", 
+        "tumhi", "amhi", "majha", "tujha", "chalalay", "mitra", "bhau", "mhanje", "kuta",
+        "nantar", "lavkar", "udya", "aaj", "karan", "pan", "bhavano"
     }
     telugu_markers = {"bagundi", "chala", "cheyandi", "nuvvu", "neeku", "nannu", "lanja", "deng", "kukka", "vedhava"}
     tamil_markers = {"irukku", "nandri", "romba", "unakku", "enna", "thevidiya", "muttal", "pesadha", "oombu", "punda"}
@@ -138,6 +154,8 @@ def detect_indic_language(text: str) -> str:
     words = set(re.findall(r'[a-zA-Z]+', lower))
     if words & hinglish_markers:
         return "Hinglish"
+    if words & marathi_roman_markers:
+        return "Marathi (Romanized)"
     if words & telugu_markers:
         return "Telugu (Romanized)"
     if words & tamil_markers:

@@ -23,11 +23,11 @@ cd d:\Projects\Toxic-Comment-Detector
 python train_models.py
 ```
 
-### 4. Launch the Streamlit Web Application
+### 4. Launch the Flask Web Application
 ```powershell
-streamlit run main.py
+python app.py
 ```
-> The application will open automatically in your default browser at **`http://localhost:8501`**.
+> The application will open automatically in your default browser at **`http://localhost:8080`**.
 
 ---
 
@@ -52,7 +52,7 @@ Follow this structured order when presenting to evaluators, professors, or team 
 - **Key Talking Point**: Explain that traditional toxicity models fail on Indian social media because they only process ASCII English and break on Devanagari, Dravidian scripts, and Hinglish slang.
 - **Showcase**:
   - The **6 Multi-label Categories** (`toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`).
-  - The **7 Supported Languages Matrix** (Hindi, Hinglish, Telugu, Tamil, Malayalam, Kannada, Indian English).
+  - The **8 Supported Languages Matrix** (Hindi, Hinglish, Marathi, Telugu, Tamil, Malayalam, Kannada, Indian English).
   - The end-to-end architecture pipeline card.
 
 ---

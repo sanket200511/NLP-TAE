@@ -13,11 +13,12 @@
 ### 🌐 Supported Indian Languages
 1. **Hindi (हिन्दी)** — Native Devanagari script processing & stopword filtering
 2. **Hinglish (Code-Mixed)** — Romanized Hindi slang, abusive phrases, and conversational discourse
-3. **Telugu (తెలుగు / Tenglish)** — Native script and Romanized Dravidian comments
-4. **Tamil (தமிழ் / Tanglish)** — Native script and Romanized Tamil insults & feedback
-5. **Malayalam (മലയാളം / Manglish)** — Regional comments & abusive terminology
-6. **Kannada (ಕನ್ನಡ / Kanglish)** — Regional comments & moderation
-7. **Indian English** — Socio-political discussions, cyberbullying, and hate speech
+3. **Marathi (मराठी)** — Native Devanagari script and Romanized Marathi slang & insults
+4. **Telugu (తెలుగు / Tenglish)** — Native script and Romanized Dravidian comments
+5. **Tamil (தமிழ் / Tanglish)** — Native script and Romanized Tamil insults & feedback
+6. **Malayalam (മലയാളം / Manglish)** — Regional comments & abusive terminology
+7. **Kannada (ಕನ್ನಡ / Kanglish)** — Regional comments & moderation
+8. **Indian English** — Socio-political discussions, cyberbullying, and hate speech
 
 ---
 
