@@ -97,10 +97,10 @@ def detect_indic_language(text: str) -> str:
     Detect the primary Indian language or script of a given text.
     Returns: 'Hindi', 'Marathi', 'Tamil', 'Telugu', 'Malayalam', 'Kannada', 'Bengali', 'Hinglish', 'Marathi (Romanized)', or 'Indian_English'.
     """
-    if not text or not str(text).strip():
+    if not text or not text.strip():
         return "Unknown"
 
-    text_str = str(text)
+    text_str = text
 
     # Count script characters
     counts = {lang: 0 for lang in UNICODE_RANGES}
@@ -118,7 +118,7 @@ def detect_indic_language(text: str) -> str:
             latin_count += 1
 
     # Check Indic scripts
-    max_indic_lang = max(counts, key=counts.get)
+    max_indic_lang = max(counts, key=lambda k: counts[k])
     if counts[max_indic_lang] > 0 and counts[max_indic_lang] >= latin_count * 0.3:
         if max_indic_lang == "Hindi":
             # Differentiate Hindi from Marathi (both use Devanagari)
@@ -184,7 +184,7 @@ def clean_indic_text(
     if not text:
         return ""
 
-    t = str(text)
+    t = text
 
     # 1. Remove URLs and links
     t = re.sub(r'https?://\S+|www\.\S+', ' ', t)

@@ -73,7 +73,7 @@ def find_toxic_terms(text: str) -> Dict[str, List[str]]:
     if not text:
         return {}
 
-    lower = str(text).lower()
+    lower = text.lower()
     matches: Dict[str, List[str]] = {}
 
     for category, term_set in INDIC_TOXIC_LEXICON.items():
@@ -97,7 +97,7 @@ def highlight_toxic_spans(text: str) -> Tuple[str, List[Dict[str, str]]]:
     if not text:
         return text, []
 
-    lower = str(text).lower()
+    lower = text.lower()
     matches = find_toxic_terms(text)
     entities = []
 
@@ -143,7 +143,7 @@ def suggest_polite_alternatives(text: str) -> List[Dict[str, str]]:
     if not text:
         return []
 
-    lower = str(text).lower()
+    lower = text.lower()
     suggestions = []
 
     for toxic_phrase, polite_replacement in POLITE_REWRITE_MAP.items():
