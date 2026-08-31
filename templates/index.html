@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndiTox - Indian Multilingual Toxic Comment Detector</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="flag-icon">🇮🇳</span>
+                <h1>IndiTox</h1>
+            </div>
+            <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
+                <i data-lucide="sun" class="sun-icon"></i>
+                <i data-lucide="moon" class="moon-icon"></i>
+            </button>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="single">
+                <i data-lucide="message-square"></i> Single Detector
+            </button>
+            <button class="tab-btn" data-tab="batch">
+                <i data-lucide="files"></i> Batch Moderation
+            </button>
+        </nav>
+
+        <!-- Main Panel -->
+        <main class="main-card">
+            <!-- Single Comment Mode -->
+            <section id="tab-single" class="tab-content active">
+                <div class="input-group">
+                    <label for="comment-input">Enter comment to analyze</label>
+                    <textarea id="comment-input" placeholder="Type or paste a comment here (Hindi, Hinglish, Tamil, Telugu, Malayalam, Kannada, English)..." rows="4"></textarea>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="lang-select">Language</label>
+                        <select id="lang-select">
+                            <option value="auto">Auto-Detect Language</option>
+                            <option value="Hindi">Hindi (Devanagari)</option>
+                            <option value="Hinglish">Hinglish</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Malayalam">Malayalam</option>
+                            <option value="English">English</option>
+                        </select>
+                    </div>
+
+                    <button class="accordion-toggle" id="advanced-toggle">
+                        <i data-lucide="sliders"></i> Settings
+                    </button>
+                </div>
+
+                <!-- Advanced Settings (Collapsible) -->
+                <div class="advanced-settings hidden" id="advanced-settings-panel">
+                    <div class="settings-grid">
+                        <div class="control-group">
+                            <label for="feature-select">Feature Representation</label>
+                            <select id="feature-select">
+                                <option value="tfidf">TF-IDF (N-Grams)</option>
+                                <option value="fasttext">FastText Subwords</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="model-select">Classifier Model</label>
+                            <select id="model-select">
+                                <option value="Logistic Regression">Logistic Regression (OvR)</option>
+                                <option value="Random Forest">Random Forest Classifier</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions-row">
+                    <button id="btn-clear" class="btn btn-secondary">
+                        <i data-lucide="trash-2"></i> Clear
+                    </button>
+                    <button id="btn-analyze" class="btn btn-primary">
+                        <i data-lucide="shield-alert"></i> Analyze Comment
+                    </button>
+                </div>
+
+                <!-- Live Results Area -->
+                <div class="results-panel hidden" id="results-panel">
+                    <div class="results-header">
+                        <h3>Analysis Output</h3>
+                        <div class="badges-row">
+                            <span class="badge" id="badge-status"></span>
+                            <span class="badge badge-lang" id="badge-detected-lang"></span>
+                        </div>
+                    </div>
+
+                    <div class="gauge-container">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill" id="gauge-fill"></div>
+                        </div>
+                        <div class="gauge-labels">
+                            <span>Toxicity Severity</span>
+                            <strong id="toxicity-percent">0%</strong>
+                        </div>
+                    </div>
+
+                    <!-- Category Badges -->
+                    <div class="categories-grid" id="categories-grid">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Highlighted Text -->
+                    <div class="highlight-box">
+                        <h4>Highlighted Spans</h4>
+                        <div class="highlight-text" id="highlight-output"></div>
+                    </div>
+
+                    <!-- Polite Suggestions -->
+                    <div class="suggestions-box hidden" id="suggestions-box">
+                        <div class="suggestions-header">
+                            <i data-lucide="lightbulb" class="bulb-icon"></i>
+                            <h4>Suggested Polite Alternative</h4>
+                        </div>
+                        <div id="suggestions-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Batch Upload Mode -->
+            <section id="tab-batch" class="tab-content">
+                <div class="drop-zone" id="drop-zone">
+                    <i data-lucide="upload-cloud" class="upload-icon"></i>
+                    <p>Drag and drop your comments CSV file here, or <span>browse files</span></p>
+                    <input type="file" id="file-input" accept=".csv" class="hidden">
+                </div>
+
+                <div class="batch-settings hidden" id="batch-settings">
+                    <div class="control-group">
+                        <label for="column-select">Select Comment Column</label>
+                        <select id="column-select">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <button id="btn-batch-process" class="btn btn-primary">
+                        <i data-lucide="play"></i> Process Batch
+                    </button>
+                </div>
+
+                <div class="batch-results hidden" id="batch-results">
+                    <div class="batch-summary">
+                        <div class="summary-card">
+                            <span class="card-label">Total Rows</span>
+                            <strong id="batch-total">0</strong>
+                        </div>
+                        <div class="summary-card flagged">
+                            <span class="card-label">Flagged Toxic</span>
+                            <strong id="batch-flagged">0</strong>
+                        </div>
+                        <div class="summary-card clean">
+                            <span class="card-label">Clean Comments</span>
+                            <strong id="batch-clean">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="batch-preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Comment</th>
+                                    <th>Language</th>
+                                    <th>Toxicity</th>
+                                    <th>Flagged Categories</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="download-container">
+                        <button id="btn-download-report" class="btn btn-primary">
+                            <i data-lucide="download"></i> Download Moderation Report
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>IndiTox 2.0 • Multilingual Content Moderation Engine • Developed by <strong>Sanket Kurve</strong></p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
